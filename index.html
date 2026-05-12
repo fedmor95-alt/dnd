@@ -547,7 +547,7 @@
       <div class="coin-medal pp">PP</div>
       <div class="coin-info">
         <div class="coin-name">Platino</div>
-        <div class="coin-equiv">1 pp = 10 gp</div>
+        <div class="coin-equiv">valore in pp</div>
       </div>
       <div class="coin-amount" id="bal-pp">0</div>
     </div>
@@ -556,7 +556,7 @@
       <div class="coin-medal gp">GP</div>
       <div class="coin-info">
         <div class="coin-name">Oro</div>
-        <div class="coin-equiv">1 gp = 10 sp</div>
+        <div class="coin-equiv">valore in gp</div>
       </div>
       <div class="coin-amount" id="bal-gp">0</div>
     </div>
@@ -565,7 +565,7 @@
       <div class="coin-medal sp">SP</div>
       <div class="coin-info">
         <div class="coin-name">Argento</div>
-        <div class="coin-equiv">1 sp = 10 cp</div>
+        <div class="coin-equiv">valore in sp</div>
       </div>
       <div class="coin-amount" id="bal-sp">0</div>
     </div>
@@ -574,13 +574,13 @@
       <div class="coin-medal cp">CP</div>
       <div class="coin-info">
         <div class="coin-name">Rame</div>
-        <div class="coin-equiv">unità base</div>
+        <div class="coin-equiv">valore in cp</div>
       </div>
       <div class="coin-amount" id="bal-cp">0</div>
     </div>
 
     <div class="total-bar">
-      Tesoro totale: <strong id="total-cp">0</strong> rame
+      <em>1 pp = 10 gp = 100 sp = 1.000 cp</em>
     </div>
   </div>
 
@@ -667,22 +667,24 @@ function save() {
   localStorage.setItem('dnd-coins', JSON.stringify({ totalCopper, history, charName }));
 }
 
-function decompose(copper) {
-  let rem = Math.max(0, copper);
+function valueInEach(copper) {
   const result = {};
   for (const coin of ORDERED) {
-    result[coin] = Math.floor(rem / RATES[coin]);
-    rem = rem % RATES[coin];
+    const val = copper / RATES[coin];
+    result[coin] = Number.isInteger(val) ? val : val.toFixed(2);
   }
   return result;
 }
 
 function render() {
-  const coins = decompose(totalCopper);
+  const coins = valueInEach(totalCopper);
   for (const coin of ORDERED) {
-    document.getElementById('bal-' + coin).textContent = coins[coin].toLocaleString('it-IT');
+    const v = coins[coin];
+    const formatted = typeof v === 'number'
+      ? v.toLocaleString('it-IT')
+      : parseFloat(v).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('bal-' + coin).textContent = formatted;
   }
-  document.getElementById('total-cp').textContent = totalCopper.toLocaleString('it-IT');
   renderHistory();
 }
 
