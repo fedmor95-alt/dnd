@@ -5,391 +5,637 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1a1a2e">
-<title>DnD Pocket</title>
+<meta name="theme-color" content="#2b1810">
+<title>DnD Easy Pocket</title>
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=MedievalSharp&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #1a1a2e;
-    --card: #16213e;
-    --surface: #0f3460;
-    --platinum: #e5e4e2;
-    --gold: #ffd700;
-    --silver: #c0c0c0;
-    --copper: #b87333;
-    --text: #eee;
-    --text-dim: #999;
+    --parchment: #f4e8d0;
+    --parchment-dark: #e8d8b0;
+    --parchment-shadow: #c4a878;
+    --ink: #2b1810;
+    --ink-light: #5a3a20;
+    --leather: #5c2e0a;
+    --leather-dark: #3d1f06;
+    --gold-fancy: #b8860b;
+    --gold-bright: #d4af37;
+    --gold-dark: #8b6914;
+    --red-blood: #7a1f1f;
+    --green-forest: #2d5016;
+
+    --pp-color: #d8d8e0;
+    --pp-dark: #8a8aa0;
+    --gp-color: #d4af37;
+    --gp-dark: #8b6914;
+    --sp-color: #b8b8b8;
+    --sp-dark: #707070;
+    --cp-color: #b87333;
+    --cp-dark: #6b3f1a;
+  }
+
+  html, body {
+    overscroll-behavior: none;
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    color: var(--ink);
     min-height: 100dvh;
     padding: 16px;
-    padding-top: env(safe-area-inset-top, 16px);
-    padding-bottom: env(safe-area-inset-bottom, 16px);
+    padding-top: calc(env(safe-area-inset-top, 0) + 16px);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
+    background-color: #2b1810;
+    background-image:
+      radial-gradient(ellipse at top, rgba(180, 130, 70, 0.15), transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(80, 40, 10, 0.4), transparent 60%),
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 4px);
+    background-attachment: fixed;
   }
 
-  h1 {
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ========= TITLE BANNER ========= */
+  .title-banner {
     text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 4px;
+    margin-bottom: 20px;
+    position: relative;
+    padding: 8px 0;
   }
 
-  .profile-section {
+  .title-banner::before,
+  .title-banner::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold-bright) 20%,
+      var(--gold-fancy) 50%,
+      var(--gold-bright) 80%,
+      transparent 100%);
+  }
+  .title-banner::before { top: 0; }
+  .title-banner::after { bottom: 0; }
+
+  .title-banner h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 1.9rem;
+    color: var(--gold-bright);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow:
+      0 0 10px rgba(212, 175, 55, 0.4),
+      0 2px 4px rgba(0,0,0,0.8),
+      0 0 2px rgba(0,0,0,0.9);
+    line-height: 1;
+    padding: 6px 0;
+  }
+
+  .title-banner .ornament {
+    color: var(--gold-fancy);
+    font-size: 1.2rem;
+    margin: 4px 0;
+    letter-spacing: 8px;
+  }
+
+  /* ========= PARCHMENT CARD ========= */
+  .parchment {
+    background-color: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 30% 20%, rgba(139, 105, 20, 0.08), transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(139, 69, 19, 0.1), transparent 50%),
+      radial-gradient(circle at 80% 30%, rgba(101, 67, 33, 0.06), transparent 40%),
+      radial-gradient(circle at 20% 70%, rgba(101, 67, 33, 0.06), transparent 40%);
+    border: 2px solid var(--parchment-shadow);
+    border-radius: 4px;
+    padding: 20px 18px;
     margin-bottom: 16px;
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.5),
+      inset 0 0 30px rgba(180, 130, 70, 0.15),
+      inset 0 0 4px rgba(101, 67, 33, 0.3);
+    position: relative;
   }
 
+  /* Corner ornaments */
+  .parchment::before,
+  .parchment::after {
+    content: '❦';
+    position: absolute;
+    color: var(--gold-dark);
+    font-size: 0.9rem;
+    opacity: 0.5;
+  }
+  .parchment::before { top: 6px; left: 8px; }
+  .parchment::after { bottom: 6px; right: 8px; }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    color: var(--leather);
+    margin-bottom: 14px;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  .section-title::after {
+    content: '✦';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold-fancy);
+    font-size: 0.7rem;
+    background: var(--parchment);
+    padding: 0 8px;
+  }
+  .section-title::before {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-fancy) 30%, var(--gold-fancy) 70%, transparent);
+  }
+
+  /* ========= CHARACTER NAME ========= */
+  .char-name-wrapper {
+    position: relative;
+    margin-top: 6px;
+  }
   .char-name-input {
     width: 100%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 2px solid rgba(255,255,255,0.1);
-    background: var(--card);
-    color: var(--gold);
-    font-size: 1.15rem;
-    font-weight: 700;
+    padding: 12px 40px;
+    border: none;
+    border-bottom: 2px solid var(--leather);
+    background: transparent;
+    color: var(--ink);
+    font-family: 'MedievalSharp', 'Cinzel', serif;
+    font-size: 1.4rem;
     text-align: center;
     outline: none;
-    transition: border-color 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .char-name-input:focus {
-    border-color: var(--gold);
+    letter-spacing: 1px;
   }
   .char-name-input::placeholder {
-    color: rgba(255,255,255,0.25);
-    font-weight: 400;
+    color: var(--ink-light);
+    opacity: 0.5;
+    font-style: italic;
   }
-
-  .balance-section {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
+  .char-name-wrapper::before,
+  .char-name-wrapper::after {
+    content: '⚔';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--leather);
+    font-size: 1.1rem;
   }
+  .char-name-wrapper::before { left: 8px; }
+  .char-name-wrapper::after { right: 8px; transform: translateY(-50%) scaleX(-1); }
 
-  .balance-section h2 {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
+  /* ========= COIN ROWS ========= */
   .coin-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 12px 6px;
+    border-bottom: 1px dashed rgba(101, 67, 33, 0.25);
+    gap: 14px;
   }
-  .coin-row:last-child { border-bottom: none; }
+  .coin-row:last-of-type { border-bottom: none; }
 
-  .coin-icon {
-    width: 40px;
-    height: 40px;
+  .coin-medal {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 700;
     flex-shrink: 0;
+    position: relative;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    box-shadow:
+      0 3px 8px rgba(0,0,0,0.3),
+      inset 0 -3px 6px rgba(0,0,0,0.3),
+      inset 0 3px 6px rgba(255,255,255,0.4);
   }
-  .coin-icon.pp { background: var(--platinum); color: #333; }
-  .coin-icon.gp { background: var(--gold); color: #333; }
-  .coin-icon.sp { background: var(--silver); color: #333; }
-  .coin-icon.cp { background: var(--copper); color: #fff; }
+  .coin-medal::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    opacity: 0.4;
+  }
 
-  .coin-info {
-    flex: 1;
-    margin-left: 12px;
+  .coin-medal.pp {
+    background: radial-gradient(circle at 35% 30%, #f8f8ff, var(--pp-color) 50%, var(--pp-dark));
+    color: #2a2a3a;
   }
-  .coin-name { font-weight: 600; font-size: 1rem; }
-  .coin-equiv { font-size: 0.75rem; color: var(--text-dim); }
+  .coin-medal.gp {
+    background: radial-gradient(circle at 35% 30%, #fff0a0, var(--gp-color) 50%, var(--gp-dark));
+    color: #4a3a08;
+  }
+  .coin-medal.sp {
+    background: radial-gradient(circle at 35% 30%, #f0f0f0, var(--sp-color) 50%, var(--sp-dark));
+    color: #2a2a2a;
+  }
+  .coin-medal.cp {
+    background: radial-gradient(circle at 35% 30%, #e89a55, var(--cp-color) 50%, var(--cp-dark));
+    color: #f4e8d0;
+  }
+
+  .coin-info { flex: 1; }
+  .coin-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ink);
+    letter-spacing: 1px;
+  }
+  .coin-equiv {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    font-style: italic;
+    opacity: 0.75;
+  }
 
   .coin-amount {
-    font-size: 1.4rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
     font-weight: 700;
+    color: var(--leather);
     font-variant-numeric: tabular-nums;
     min-width: 60px;
     text-align: right;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
   }
 
-  .total-copper {
+  .total-bar {
     text-align: center;
-    margin-top: 12px;
+    margin-top: 10px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    color: var(--text-dim);
-    font-size: 0.85rem;
+    border-top: 2px double var(--parchment-shadow);
+    color: var(--ink-light);
+    font-size: 0.95rem;
+    font-style: italic;
   }
-  .total-copper strong {
-    color: var(--text);
+  .total-bar strong {
+    font-style: normal;
+    font-family: 'Cinzel', serif;
+    color: var(--leather);
     font-size: 1.1rem;
+    font-weight: 700;
   }
 
-  .action-section {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-
-  .action-section h2 {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
+  /* ========= MODE TOGGLE ========= */
   .toggle-row {
     display: flex;
-    background: var(--surface);
-    border-radius: 10px;
+    gap: 8px;
     margin-bottom: 16px;
-    overflow: hidden;
   }
   .toggle-btn {
     flex: 1;
     padding: 10px;
-    text-align: center;
+    font-family: 'Cinzel', serif;
     font-weight: 600;
-    font-size: 0.95rem;
-    border: none;
-    background: transparent;
-    color: var(--text-dim);
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 2px solid var(--parchment-shadow);
+    background: linear-gradient(180deg, var(--parchment-dark), var(--parchment));
+    color: var(--ink-light);
     cursor: pointer;
+    border-radius: 3px;
     transition: all 0.2s;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3);
   }
   .toggle-btn.active {
-    background: #28a745;
-    color: #fff;
-    border-radius: 10px;
+    background: linear-gradient(180deg, var(--green-forest), #1a3008);
+    color: var(--parchment);
+    border-color: #0a1a04;
+    box-shadow:
+      inset 0 1px 4px rgba(0,0,0,0.3),
+      0 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.6);
   }
   .toggle-btn.active.remove {
-    background: #dc3545;
+    background: linear-gradient(180deg, var(--red-blood), #4a0f0f);
+    border-color: #2a0808;
   }
 
+  /* ========= INPUT GRID ========= */
   .input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .input-group {
-    position: relative;
+    gap: 12px;
   }
   .input-group label {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    margin-bottom: 4px;
-    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--leather);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
   }
+  .input-group label .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    flex-shrink: 0;
+  }
+  .input-group label .dot.pp { background: radial-gradient(circle at 35% 30%, #f8f8ff, var(--pp-color)); }
+  .input-group label .dot.gp { background: radial-gradient(circle at 35% 30%, #fff0a0, var(--gp-color)); }
+  .input-group label .dot.sp { background: radial-gradient(circle at 35% 30%, #f0f0f0, var(--sp-color)); }
+  .input-group label .dot.cp { background: radial-gradient(circle at 35% 30%, #e89a55, var(--cp-color)); }
+
   .input-group input {
     width: 100%;
     padding: 12px;
-    border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.1);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 1.1rem;
+    border: 2px solid var(--parchment-shadow);
+    border-radius: 3px;
+    background: rgba(255, 252, 240, 0.6);
+    color: var(--ink);
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
     font-weight: 600;
     text-align: center;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.2s;
+    box-shadow: inset 0 2px 4px rgba(101, 67, 33, 0.1);
   }
   .input-group input:focus {
-    border-color: var(--gold);
+    border-color: var(--gold-fancy);
+    background: rgba(255, 252, 240, 0.9);
+    box-shadow:
+      inset 0 2px 4px rgba(101, 67, 33, 0.1),
+      0 0 0 3px rgba(212, 175, 55, 0.2);
   }
-  .input-group input::placeholder {
-    color: rgba(255,255,255,0.2);
-  }
+  .input-group input::placeholder { color: rgba(0,0,0,0.2); }
 
+  /* ========= APPLY BUTTON ========= */
   .apply-btn {
     width: 100%;
     padding: 14px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
     margin-top: 16px;
-    transition: all 0.15s;
-    background: #28a745;
-    color: #fff;
+    border: 2px solid var(--leather-dark);
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: linear-gradient(180deg, #4a8520 0%, var(--green-forest) 50%, #1a3008 100%);
+    color: var(--parchment);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    box-shadow:
+      0 3px 6px rgba(0,0,0,0.3),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.3);
+    transition: all 0.1s;
   }
   .apply-btn.remove {
-    background: #dc3545;
+    background: linear-gradient(180deg, #a52a2a 0%, var(--red-blood) 50%, #3a0808 100%);
   }
   .apply-btn:active {
-    transform: scale(0.97);
-    opacity: 0.9;
+    transform: translateY(1px);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.3),
+      inset 0 1px 3px rgba(0,0,0,0.4);
   }
 
-  .history-section {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  .history-section h2 {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-    text-align: center;
-  }
+  /* ========= HISTORY ========= */
   .history-list {
-    max-height: 200px;
+    max-height: 220px;
     overflow-y: auto;
+    padding-right: 4px;
+  }
+  .history-list::-webkit-scrollbar { width: 6px; }
+  .history-list::-webkit-scrollbar-thumb {
+    background: var(--parchment-shadow);
+    border-radius: 3px;
   }
   .history-item {
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    font-size: 0.85rem;
+    padding: 8px 4px;
+    border-bottom: 1px dashed rgba(101, 67, 33, 0.2);
+    font-size: 0.95rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
   }
   .history-item:last-child { border-bottom: none; }
-  .history-item .coins { flex: 1; }
-  .history-item .time { color: var(--text-dim); font-size: 0.75rem; }
-  .history-add { color: #5cb85c; }
-  .history-remove { color: #d9534f; }
-  .history-empty { text-align: center; color: var(--text-dim); font-size: 0.85rem; padding: 12px; }
-
-  .reset-btn {
-    display: block;
-    margin: 0 auto 40px;
-    padding: 10px 24px;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    background: transparent;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    cursor: pointer;
+  .history-item .coins { flex: 1; font-weight: 600; }
+  .history-item .time {
+    color: var(--ink-light);
+    font-size: 0.75rem;
+    font-style: italic;
+    white-space: nowrap;
   }
-  .reset-btn:active { opacity: 0.6; }
+  .history-add { color: var(--green-forest); }
+  .history-remove { color: var(--red-blood); }
+  .history-empty {
+    text-align: center;
+    color: var(--ink-light);
+    font-style: italic;
+    padding: 16px;
+    opacity: 0.7;
+  }
 
+  /* ========= BOTTOM ACTIONS ========= */
+  .bottom-actions {
+    display: flex;
+    gap: 8px;
+    margin: 20px 0 40px;
+  }
+  .small-btn {
+    flex: 1;
+    padding: 10px 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 1px solid var(--parchment-shadow);
+    background: rgba(244, 232, 208, 0.1);
+    color: var(--parchment);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .small-btn:active { opacity: 0.6; }
+  .small-btn.danger { color: #e88080; border-color: rgba(232, 128, 128, 0.4); }
+
+  /* ========= TOAST ========= */
   .toast {
     position: fixed;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 10px;
+    background: var(--leather-dark);
+    color: var(--parchment);
+    padding: 12px 24px;
+    border: 1px solid var(--gold-fancy);
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
+    letter-spacing: 1px;
     opacity: 0;
     transition: all 0.3s ease;
     z-index: 100;
     pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   }
   .toast.show {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
+
+  /* ========= FOOTER ========= */
+  .footer {
+    text-align: center;
+    color: rgba(244, 232, 208, 0.3);
+    font-size: 0.75rem;
+    font-style: italic;
+    margin-top: 20px;
+    letter-spacing: 1px;
+  }
 </style>
 </head>
 <body>
 
-<h1>DnD Pocket</h1>
+<div class="container">
 
-<div class="profile-section">
-  <input type="text" id="char-name" class="char-name-input" placeholder="Nome personaggio..." maxlength="40">
+  <div class="title-banner">
+    <div class="ornament">⚔ ✦ ⚔</div>
+    <h1>DnD Easy Pocket</h1>
+    <div class="ornament">⚜ ✦ ⚜</div>
+  </div>
+
+  <div class="parchment">
+    <div class="section-title">Adventurer</div>
+    <div class="char-name-wrapper">
+      <input type="text" id="char-name" class="char-name-input" placeholder="Nome del Personaggio" maxlength="40">
+    </div>
+  </div>
+
+  <div class="parchment">
+    <div class="section-title">Coin Purse</div>
+
+    <div class="coin-row">
+      <div class="coin-medal pp">PP</div>
+      <div class="coin-info">
+        <div class="coin-name">Platino</div>
+        <div class="coin-equiv">1 pp = 10 gp</div>
+      </div>
+      <div class="coin-amount" id="bal-pp">0</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-medal gp">GP</div>
+      <div class="coin-info">
+        <div class="coin-name">Oro</div>
+        <div class="coin-equiv">1 gp = 10 sp</div>
+      </div>
+      <div class="coin-amount" id="bal-gp">0</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-medal sp">SP</div>
+      <div class="coin-info">
+        <div class="coin-name">Argento</div>
+        <div class="coin-equiv">1 sp = 10 cp</div>
+      </div>
+      <div class="coin-amount" id="bal-sp">0</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-medal cp">CP</div>
+      <div class="coin-info">
+        <div class="coin-name">Rame</div>
+        <div class="coin-equiv">unità base</div>
+      </div>
+      <div class="coin-amount" id="bal-cp">0</div>
+    </div>
+
+    <div class="total-bar">
+      Tesoro totale: <strong id="total-cp">0</strong> rame
+    </div>
+  </div>
+
+  <div class="parchment">
+    <div class="section-title">Treasure Ledger</div>
+
+    <div class="toggle-row">
+      <button class="toggle-btn active" id="btn-add" onclick="setMode('add')">✦ Guadagno</button>
+      <button class="toggle-btn" id="btn-remove" onclick="setMode('remove')">✦ Spesa</button>
+    </div>
+
+    <div class="input-grid">
+      <div class="input-group">
+        <label><span class="dot pp"></span>Platino</label>
+        <input type="number" id="in-pp" placeholder="0" min="0" inputmode="numeric">
+      </div>
+      <div class="input-group">
+        <label><span class="dot gp"></span>Oro</label>
+        <input type="number" id="in-gp" placeholder="0" min="0" inputmode="numeric">
+      </div>
+      <div class="input-group">
+        <label><span class="dot sp"></span>Argento</label>
+        <input type="number" id="in-sp" placeholder="0" min="0" inputmode="numeric">
+      </div>
+      <div class="input-group">
+        <label><span class="dot cp"></span>Rame</label>
+        <input type="number" id="in-cp" placeholder="0" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <button class="apply-btn" id="apply-btn" onclick="applyTransaction()">Aggiungi al Tesoro</button>
+  </div>
+
+  <div class="parchment">
+    <div class="section-title">Chronicle</div>
+    <div class="history-list" id="history-list">
+      <div class="history-empty">~ Nessuna gesta ancora ~</div>
+    </div>
+  </div>
+
+  <div class="bottom-actions">
+    <button class="small-btn" onclick="exportData()">⬇ Backup</button>
+    <button class="small-btn" onclick="importData()">⬆ Ripristina</button>
+    <button class="small-btn danger" onclick="resetAll()">☠ Azzera</button>
+  </div>
+
+  <div class="footer">~ may your quest be legendary ~</div>
+
 </div>
 
-<div class="balance-section">
-  <h2>Saldo attuale</h2>
-  <div class="coin-row">
-    <div class="coin-icon pp">P</div>
-    <div class="coin-info">
-      <div class="coin-name">Platino</div>
-      <div class="coin-equiv">1 pp = 10 gp</div>
-    </div>
-    <div class="coin-amount" id="bal-pp">0</div>
-  </div>
-  <div class="coin-row">
-    <div class="coin-icon gp">G</div>
-    <div class="coin-info">
-      <div class="coin-name">Oro</div>
-      <div class="coin-equiv">1 gp = 10 sp</div>
-    </div>
-    <div class="coin-amount" id="bal-gp">0</div>
-  </div>
-  <div class="coin-row">
-    <div class="coin-icon sp">S</div>
-    <div class="coin-info">
-      <div class="coin-name">Argento</div>
-      <div class="coin-equiv">1 sp = 10 cp</div>
-    </div>
-    <div class="coin-amount" id="bal-sp">0</div>
-  </div>
-  <div class="coin-row">
-    <div class="coin-icon cp">C</div>
-    <div class="coin-info">
-      <div class="coin-name">Rame</div>
-      <div class="coin-equiv">unità base</div>
-    </div>
-    <div class="coin-amount" id="bal-cp">0</div>
-  </div>
-  <div class="total-copper">
-    Totale in rame: <strong id="total-cp">0</strong> cp
-  </div>
-</div>
-
-<div class="action-section">
-  <h2>Aggiungi o rimuovi</h2>
-  <div class="toggle-row">
-    <button class="toggle-btn active" id="btn-add" onclick="setMode('add')">+ Aggiungi</button>
-    <button class="toggle-btn" id="btn-remove" onclick="setMode('remove')">− Rimuovi</button>
-  </div>
-  <div class="input-grid">
-    <div class="input-group">
-      <label>Platino (pp)</label>
-      <input type="number" id="in-pp" placeholder="0" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label>Oro (gp)</label>
-      <input type="number" id="in-gp" placeholder="0" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label>Argento (sp)</label>
-      <input type="number" id="in-sp" placeholder="0" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label>Rame (cp)</label>
-      <input type="number" id="in-cp" placeholder="0" min="0" inputmode="numeric">
-    </div>
-  </div>
-  <button class="apply-btn" id="apply-btn" onclick="applyTransaction()">+ Aggiungi monete</button>
-</div>
-
-<div class="history-section">
-  <h2>Cronologia</h2>
-  <div class="history-list" id="history-list">
-    <div class="history-empty">Nessuna transazione</div>
-  </div>
-</div>
-
-<button class="reset-btn" onclick="resetAll()">Azzera tutto</button>
-
+<input type="file" id="import-file" accept=".json" style="display:none">
 <div class="toast" id="toast"></div>
 
 <script>
 const RATES = { pp: 1000, gp: 100, sp: 10, cp: 1 };
-const NAMES = { pp: 'pp', gp: 'gp', sp: 'sp', cp: 'cp' };
 const ORDERED = ['pp', 'gp', 'sp', 'cp'];
 
 let totalCopper = 0;
@@ -406,10 +652,12 @@ nameInput.addEventListener('input', () => {
 function load() {
   const saved = localStorage.getItem('dnd-coins');
   if (saved) {
-    const data = JSON.parse(saved);
-    totalCopper = data.totalCopper || 0;
-    history = data.history || [];
-    charName = data.charName || '';
+    try {
+      const data = JSON.parse(saved);
+      totalCopper = data.totalCopper || 0;
+      history = data.history || [];
+      charName = data.charName || '';
+    } catch(e) {}
   }
   nameInput.value = charName;
   render();
@@ -441,7 +689,7 @@ function render() {
 function renderHistory() {
   const el = document.getElementById('history-list');
   if (history.length === 0) {
-    el.innerHTML = '<div class="history-empty">Nessuna transazione</div>';
+    el.innerHTML = '<div class="history-empty">~ Nessuna gesta ancora ~</div>';
     return;
   }
   el.innerHTML = history.slice().reverse().map(h => {
@@ -468,10 +716,10 @@ function setMode(m) {
   document.getElementById('btn-remove').classList.toggle('remove', m === 'remove');
   const btn = document.getElementById('apply-btn');
   if (m === 'add') {
-    btn.textContent = '+ Aggiungi monete';
+    btn.textContent = 'Aggiungi al Tesoro';
     btn.classList.remove('remove');
   } else {
-    btn.textContent = '− Rimuovi monete';
+    btn.textContent = 'Sottrai dal Tesoro';
     btn.classList.add('remove');
   }
 }
@@ -501,7 +749,7 @@ function applyTransaction() {
   }
 
   history.push({ type: mode, coins, time: Date.now() });
-  if (history.length > 50) history = history.slice(-50);
+  if (history.length > 100) history = history.slice(-100);
 
   save();
   render();
@@ -510,11 +758,11 @@ function applyTransaction() {
     document.getElementById('in-' + coin).value = '';
   }
 
-  showToast(mode === 'add' ? 'Monete aggiunte!' : 'Monete rimosse!');
+  showToast(mode === 'add' ? '✦ Tesoro aggiunto' : '✦ Monete spese');
 }
 
 function resetAll() {
-  if (!confirm('Sei sicuro di voler azzerare tutto?')) return;
+  if (!confirm('Vuoi davvero svuotare la borsa?\nQuesta azione non può essere annullata.')) return;
   totalCopper = 0;
   history = [];
   save();
@@ -522,11 +770,52 @@ function resetAll() {
   showToast('Borsa svuotata');
 }
 
+function exportData() {
+  const data = { totalCopper, history, charName, exportDate: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const safeName = (charName || 'personaggio').replace(/[^a-z0-9]/gi, '_');
+  a.download = `dnd-pocket-${safeName}-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup scaricato');
+}
+
+function importData() {
+  document.getElementById('import-file').click();
+}
+
+document.getElementById('import-file').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!confirm('Ripristinare questo backup? I dati attuali saranno sostituiti.')) return;
+      totalCopper = data.totalCopper || 0;
+      history = data.history || [];
+      charName = data.charName || '';
+      nameInput.value = charName;
+      save();
+      render();
+      showToast('Backup ripristinato');
+    } catch(err) {
+      showToast('File non valido');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
 load();
