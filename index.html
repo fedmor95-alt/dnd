@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1a2e">
+<title>DnD Pocket</title>
+<link rel="manifest" href="manifest.json">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #1a1a2e;
+    --card: #16213e;
+    --surface: #0f3460;
+    --platinum: #e5e4e2;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --copper: #b87333;
+    --text: #eee;
+    --text-dim: #999;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    padding: 16px;
+    padding-top: env(safe-area-inset-top, 16px);
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+  }
+
+  .profile-section {
+    margin-bottom: 16px;
+  }
+
+  .char-name-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+    background: var(--card);
+    color: var(--gold);
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .char-name-input:focus {
+    border-color: var(--gold);
+  }
+  .char-name-input::placeholder {
+    color: rgba(255,255,255,0.25);
+    font-weight: 400;
+  }
+
+  .balance-section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .balance-section h2 {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .coin-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .coin-row:last-child { border-bottom: none; }
+
+  .coin-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .coin-icon.pp { background: var(--platinum); color: #333; }
+  .coin-icon.gp { background: var(--gold); color: #333; }
+  .coin-icon.sp { background: var(--silver); color: #333; }
+  .coin-icon.cp { background: var(--copper); color: #fff; }
+
+  .coin-info {
+    flex: 1;
+    margin-left: 12px;
+  }
+  .coin-name { font-weight: 600; font-size: 1rem; }
+  .coin-equiv { font-size: 0.75rem; color: var(--text-dim); }
+
+  .coin-amount {
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .total-copper {
+    text-align: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+  .total-copper strong {
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+
+  .action-section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .action-section h2 {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .toggle-row {
+    display: flex;
+    background: var(--surface);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-btn.active {
+    background: #28a745;
+    color: #fff;
+    border-radius: 10px;
+  }
+  .toggle-btn.active.remove {
+    background: #dc3545;
+  }
+
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .input-group {
+    position: relative;
+  }
+  .input-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    padding-left: 4px;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.1);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-group input:focus {
+    border-color: var(--gold);
+  }
+  .input-group input::placeholder {
+    color: rgba(255,255,255,0.2);
+  }
+
+  .apply-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.15s;
+    background: #28a745;
+    color: #fff;
+  }
+  .apply-btn.remove {
+    background: #dc3545;
+  }
+  .apply-btn:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+
+  .history-section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .history-section h2 {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .history-list {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .history-item {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-item .coins { flex: 1; }
+  .history-item .time { color: var(--text-dim); font-size: 0.75rem; }
+  .history-add { color: #5cb85c; }
+  .history-remove { color: #d9534f; }
+  .history-empty { text-align: center; color: var(--text-dim); font-size: 0.85rem; padding: 12px; }
+
+  .reset-btn {
+    display: block;
+    margin: 0 auto 40px;
+    padding: 10px 24px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .reset-btn:active { opacity: 0.6; }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<h1>DnD Pocket</h1>
+
+<div class="profile-section">
+  <input type="text" id="char-name" class="char-name-input" placeholder="Nome personaggio..." maxlength="40">
+</div>
+
+<div class="balance-section">
+  <h2>Saldo attuale</h2>
+  <div class="coin-row">
+    <div class="coin-icon pp">P</div>
+    <div class="coin-info">
+      <div class="coin-name">Platino</div>
+      <div class="coin-equiv">1 pp = 10 gp</div>
+    </div>
+    <div class="coin-amount" id="bal-pp">0</div>
+  </div>
+  <div class="coin-row">
+    <div class="coin-icon gp">G</div>
+    <div class="coin-info">
+      <div class="coin-name">Oro</div>
+      <div class="coin-equiv">1 gp = 10 sp</div>
+    </div>
+    <div class="coin-amount" id="bal-gp">0</div>
+  </div>
+  <div class="coin-row">
+    <div class="coin-icon sp">S</div>
+    <div class="coin-info">
+      <div class="coin-name">Argento</div>
+      <div class="coin-equiv">1 sp = 10 cp</div>
+    </div>
+    <div class="coin-amount" id="bal-sp">0</div>
+  </div>
+  <div class="coin-row">
+    <div class="coin-icon cp">C</div>
+    <div class="coin-info">
+      <div class="coin-name">Rame</div>
+      <div class="coin-equiv">unità base</div>
+    </div>
+    <div class="coin-amount" id="bal-cp">0</div>
+  </div>
+  <div class="total-copper">
+    Totale in rame: <strong id="total-cp">0</strong> cp
+  </div>
+</div>
+
+<div class="action-section">
+  <h2>Aggiungi o rimuovi</h2>
+  <div class="toggle-row">
+    <button class="toggle-btn active" id="btn-add" onclick="setMode('add')">+ Aggiungi</button>
+    <button class="toggle-btn" id="btn-remove" onclick="setMode('remove')">− Rimuovi</button>
+  </div>
+  <div class="input-grid">
+    <div class="input-group">
+      <label>Platino (pp)</label>
+      <input type="number" id="in-pp" placeholder="0" min="0" inputmode="numeric">
+    </div>
+    <div class="input-group">
+      <label>Oro (gp)</label>
+      <input type="number" id="in-gp" placeholder="0" min="0" inputmode="numeric">
+    </div>
+    <div class="input-group">
+      <label>Argento (sp)</label>
+      <input type="number" id="in-sp" placeholder="0" min="0" inputmode="numeric">
+    </div>
+    <div class="input-group">
+      <label>Rame (cp)</label>
+      <input type="number" id="in-cp" placeholder="0" min="0" inputmode="numeric">
+    </div>
+  </div>
+  <button class="apply-btn" id="apply-btn" onclick="applyTransaction()">+ Aggiungi monete</button>
+</div>
+
+<div class="history-section">
+  <h2>Cronologia</h2>
+  <div class="history-list" id="history-list">
+    <div class="history-empty">Nessuna transazione</div>
+  </div>
+</div>
+
+<button class="reset-btn" onclick="resetAll()">Azzera tutto</button>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const RATES = { pp: 1000, gp: 100, sp: 10, cp: 1 };
+const NAMES = { pp: 'pp', gp: 'gp', sp: 'sp', cp: 'cp' };
+const ORDERED = ['pp', 'gp', 'sp', 'cp'];
+
+let totalCopper = 0;
+let mode = 'add';
+let history = [];
+let charName = '';
+
+const nameInput = document.getElementById('char-name');
+nameInput.addEventListener('input', () => {
+  charName = nameInput.value;
+  save();
+});
+
+function load() {
+  const saved = localStorage.getItem('dnd-coins');
+  if (saved) {
+    const data = JSON.parse(saved);
+    totalCopper = data.totalCopper || 0;
+    history = data.history || [];
+    charName = data.charName || '';
+  }
+  nameInput.value = charName;
+  render();
+}
+
+function save() {
+  localStorage.setItem('dnd-coins', JSON.stringify({ totalCopper, history, charName }));
+}
+
+function decompose(copper) {
+  let rem = Math.max(0, copper);
+  const result = {};
+  for (const coin of ORDERED) {
+    result[coin] = Math.floor(rem / RATES[coin]);
+    rem = rem % RATES[coin];
+  }
+  return result;
+}
+
+function render() {
+  const coins = decompose(totalCopper);
+  for (const coin of ORDERED) {
+    document.getElementById('bal-' + coin).textContent = coins[coin].toLocaleString('it-IT');
+  }
+  document.getElementById('total-cp').textContent = totalCopper.toLocaleString('it-IT');
+  renderHistory();
+}
+
+function renderHistory() {
+  const el = document.getElementById('history-list');
+  if (history.length === 0) {
+    el.innerHTML = '<div class="history-empty">Nessuna transazione</div>';
+    return;
+  }
+  el.innerHTML = history.slice().reverse().map(h => {
+    const cls = h.type === 'add' ? 'history-add' : 'history-remove';
+    const sign = h.type === 'add' ? '+' : '−';
+    const parts = [];
+    for (const coin of ORDERED) {
+      if (h.coins[coin]) parts.push(h.coins[coin] + ' ' + coin);
+    }
+    const time = new Date(h.time).toLocaleString('it-IT', {
+      day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+    });
+    return `<div class="history-item">
+      <span class="coins ${cls}">${sign} ${parts.join(', ')}</span>
+      <span class="time">${time}</span>
+    </div>`;
+  }).join('');
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('btn-add').classList.toggle('active', m === 'add');
+  document.getElementById('btn-remove').classList.toggle('active', m === 'remove');
+  document.getElementById('btn-remove').classList.toggle('remove', m === 'remove');
+  const btn = document.getElementById('apply-btn');
+  if (m === 'add') {
+    btn.textContent = '+ Aggiungi monete';
+    btn.classList.remove('remove');
+  } else {
+    btn.textContent = '− Rimuovi monete';
+    btn.classList.add('remove');
+  }
+}
+
+function applyTransaction() {
+  const coins = {};
+  let copperDelta = 0;
+  for (const coin of ORDERED) {
+    const val = parseInt(document.getElementById('in-' + coin).value) || 0;
+    if (val < 0) continue;
+    coins[coin] = val;
+    copperDelta += val * RATES[coin];
+  }
+  if (copperDelta === 0) {
+    showToast('Inserisci almeno un valore');
+    return;
+  }
+
+  if (mode === 'remove') {
+    if (copperDelta > totalCopper) {
+      showToast('Fondi insufficienti!');
+      return;
+    }
+    totalCopper -= copperDelta;
+  } else {
+    totalCopper += copperDelta;
+  }
+
+  history.push({ type: mode, coins, time: Date.now() });
+  if (history.length > 50) history = history.slice(-50);
+
+  save();
+  render();
+
+  for (const coin of ORDERED) {
+    document.getElementById('in-' + coin).value = '';
+  }
+
+  showToast(mode === 'add' ? 'Monete aggiunte!' : 'Monete rimosse!');
+}
+
+function resetAll() {
+  if (!confirm('Sei sicuro di voler azzerare tutto?')) return;
+  totalCopper = 0;
+  history = [];
+  save();
+  render();
+  showToast('Borsa svuotata');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+load();
+</script>
+</body>
+</html>

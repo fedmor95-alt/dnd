@@ -1,0 +1,16 @@
+{
+  "name": "DnD Pocket",
+  "short_name": "DnD Pocket",
+  "description": "Borsa delle monete per D&D con conversione automatica",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ffd700' stroke='%23b8860b' stroke-width='4'/><text x='50' y='62' text-anchor='middle' font-size='40' font-weight='bold' fill='%23333'>G</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
