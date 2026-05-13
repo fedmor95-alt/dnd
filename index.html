@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#2b1810">
-<title>DnD Easy Pocket</title>
+<title>DnD Companion</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +108,66 @@
     font-size: 1.2rem;
     margin: 4px 0;
     letter-spacing: 8px;
+  }
+
+  /* ========= TABS ========= */
+  .tab-switcher {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    padding: 0 4px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 14px 10px;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 2px solid var(--leather-dark);
+    border-bottom: 4px solid var(--leather-dark);
+    background: linear-gradient(180deg, #6b3a14, #4a2208);
+    color: rgba(244, 232, 208, 0.55);
+    cursor: pointer;
+    border-radius: 6px 6px 2px 2px;
+    transition: all 0.2s;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tab-btn .tab-icon {
+    font-size: 1.1rem;
+    color: var(--gold-fancy);
+    opacity: 0.6;
+  }
+  .tab-btn.active {
+    background: linear-gradient(180deg, var(--parchment-dark), var(--parchment-shadow));
+    color: var(--leather);
+    border-color: var(--gold-fancy);
+    border-bottom-color: var(--gold-bright);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      0 4px 8px rgba(0,0,0,0.4),
+      0 0 12px rgba(212, 175, 55, 0.3);
+  }
+  .tab-btn.active .tab-icon {
+    color: var(--gold-dark);
+    opacity: 1;
+  }
+  .tab-btn:active { transform: translateY(1px); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* ========= PARCHMENT CARD ========= */
@@ -773,7 +833,7 @@
 
   <div class="title-banner">
     <div class="ornament">⚔ ✦ ⚔</div>
-    <h1>DnD Easy Pocket</h1>
+    <h1>DnD Companion</h1>
     <div class="ornament">⚜ ✦ ⚜</div>
   </div>
 
@@ -783,6 +843,17 @@
       <input type="text" id="char-name" class="char-name-input" placeholder="Nome del Personaggio" maxlength="40">
     </div>
   </div>
+
+  <div class="tab-switcher">
+    <button class="tab-btn active" data-tab="pocket" onclick="switchTab('pocket')">
+      <span class="tab-icon">⚜</span> Easy Pocket
+    </button>
+    <button class="tab-btn" data-tab="pack" onclick="switchTab('pack')">
+      <span class="tab-icon">⚖</span> Heavy Pack
+    </button>
+  </div>
+
+  <div class="tab-content active" id="tab-pocket">
 
   <div class="parchment">
     <div class="section-title">Coin Purse</div>
@@ -859,6 +930,17 @@
   </div>
 
   <div class="parchment">
+    <div class="section-title">Chronicle</div>
+    <div class="history-list" id="history-list">
+      <div class="history-empty">~ Nessuna gesta ancora ~</div>
+    </div>
+  </div>
+
+  </div><!-- /tab-pocket -->
+
+  <div class="tab-content" id="tab-pack">
+
+  <div class="parchment">
     <div class="section-title">Equipment</div>
 
     <div class="capacity-row">
@@ -887,12 +969,7 @@
     </div>
   </div>
 
-  <div class="parchment">
-    <div class="section-title">Chronicle</div>
-    <div class="history-list" id="history-list">
-      <div class="history-empty">~ Nessuna gesta ancora ~</div>
-    </div>
-  </div>
+  </div><!-- /tab-pack -->
 
   <div class="bottom-actions">
     <button class="small-btn" onclick="exportData()">⬇ Backup</button>
@@ -1067,6 +1144,18 @@ let charName = '';
 let inventory = []; // [{ name, w (lb), qty, custom }]
 let maxCapacityLb = 0; // sempre in lb internamente
 let unit = 'lb';
+let activeTab = 'pocket';
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  document.querySelectorAll('.tab-content').forEach(c => {
+    c.classList.toggle('active', c.id === 'tab-' + tab);
+  });
+  save();
+}
 
 const nameInput = document.getElementById('char-name');
 nameInput.addEventListener('input', () => {
@@ -1085,18 +1174,20 @@ function load() {
       inventory = data.inventory || [];
       maxCapacityLb = data.maxCapacityLb || 0;
       unit = data.unit || 'lb';
+      activeTab = data.activeTab || 'pocket';
     } catch(e) {}
   }
   nameInput.value = charName;
   document.getElementById('unit-select').value = unit;
   renderCapacityInput();
+  switchTab(activeTab);
   render();
   renderInventory();
 }
 
 function save() {
   localStorage.setItem('dnd-coins', JSON.stringify({
-    totalCopper, history, charName, inventory, maxCapacityLb, unit
+    totalCopper, history, charName, inventory, maxCapacityLb, unit, activeTab
   }));
 }
 

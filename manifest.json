@@ -1,6 +1,6 @@
 {
-  "name": "DnD Easy Pocket",
-  "short_name": "DnD Easy Pocket",
+  "name": "DnD Companion",
+  "short_name": "DnD Companion",
   "description": "Borsa delle monete per D&D con conversione automatica",
   "start_url": "./index.html",
   "display": "standalone",
