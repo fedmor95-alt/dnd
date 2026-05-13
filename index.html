@@ -1002,8 +1002,8 @@
       <label>Capacità max:</label>
       <input type="number" id="max-capacity" class="capacity-input" min="0" step="0.1" placeholder="0">
       <select id="unit-select" class="unit-select">
-        <option value="lb">lb</option>
         <option value="kg">kg</option>
+        <option value="lb">lb</option>
       </select>
     </div>
 
@@ -1011,7 +1011,7 @@
       <div class="capacity-bar-track">
         <div class="capacity-bar-fill low" id="capacity-bar" style="width:0%"></div>
       </div>
-      <div class="capacity-label" id="capacity-label">0 / 0 lb</div>
+      <div class="capacity-label" id="capacity-label">0 / 0 kg</div>
     </div>
 
     <div class="item-search-wrap">
@@ -1198,7 +1198,7 @@ let history = [];
 let charName = '';
 let inventory = []; // [{ name, w (lb), qty, custom }]
 let maxCapacityLb = 0; // sempre in lb internamente
-let unit = 'lb';
+let unit = 'kg';
 let activeTab = 'pocket';
 
 function switchTab(tab) {
@@ -1228,7 +1228,7 @@ function load() {
       charName = data.charName || '';
       inventory = data.inventory || [];
       maxCapacityLb = data.maxCapacityLb || 0;
-      unit = data.unit || 'lb';
+      unit = data.unit || 'kg';
       activeTab = data.activeTab || 'pocket';
     } catch(e) {}
   }
@@ -1393,7 +1393,7 @@ document.getElementById('import-file').addEventListener('change', (e) => {
       charName = data.charName || '';
       inventory = data.inventory || [];
       maxCapacityLb = data.maxCapacityLb || 0;
-      unit = data.unit || 'lb';
+      unit = data.unit || 'kg';
       nameInput.value = charName;
       document.getElementById('unit-select').value = unit;
       renderCapacityInput();
