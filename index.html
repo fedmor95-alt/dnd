@@ -110,6 +110,55 @@
     letter-spacing: 8px;
   }
 
+  /* ========= INSTALL BANNER ========= */
+  .install-banner {
+    background: linear-gradient(180deg, var(--parchment-dark), var(--parchment));
+    border: 1.5px solid var(--gold-fancy);
+    border-radius: 4px;
+    padding: 10px 36px 10px 12px;
+    margin-bottom: 14px;
+    color: var(--ink);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 0 0 12px rgba(180, 130, 70, 0.15);
+    display: none;
+  }
+  .install-banner.show { display: block; animation: slideDown 0.4s ease; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .install-banner-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--leather);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .install-banner-title::before { content: '⚜'; color: var(--gold-fancy); }
+  .install-banner-text { color: var(--ink-light); font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; }
+  .install-banner-text strong { color: var(--ink); font-weight: 700; }
+  .install-banner-close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: var(--leather);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    opacity: 0.6;
+    line-height: 1;
+  }
+  .install-banner-close:active { opacity: 1; }
+
   /* ========= TABS ========= */
   .tab-switcher {
     display: flex;
@@ -837,6 +886,12 @@
     <div class="ornament">⚜ ✦ ⚜</div>
   </div>
 
+  <div class="install-banner" id="install-banner">
+    <div class="install-banner-title">Installa come app</div>
+    <div class="install-banner-text" id="install-banner-text"></div>
+    <button class="install-banner-close" onclick="dismissInstallBanner()" aria-label="Chiudi">✕</button>
+  </div>
+
   <div class="parchment">
     <div class="section-title">Adventurer</div>
     <div class="char-name-wrapper">
@@ -1548,7 +1603,41 @@ function showToast(msg) {
   t._timer = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
+// ========= INSTALL BANNER =========
+function checkInstallBanner() {
+  // Già installata come PWA? Non mostrare.
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  if (isStandalone) return;
+
+  // Già dismissed? Non mostrare.
+  if (localStorage.getItem('install-banner-dismissed') === '1') return;
+
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isAndroid = /Android/.test(ua);
+
+  let msg;
+  if (isIOS) {
+    msg = `Premi <strong>Condividi</strong> <span style="font-size:1.1em">⬆️</span> in basso, poi <strong>"Aggiungi a Home"</strong> per usare DnD Companion come app.`;
+  } else if (isAndroid) {
+    msg = `Apri il menu del browser <strong>⋮</strong> in alto a destra, poi <strong>"Installa app"</strong> o <strong>"Aggiungi a schermata Home"</strong>.`;
+  } else {
+    // Desktop: skip
+    return;
+  }
+
+  document.getElementById('install-banner-text').innerHTML = msg;
+  document.getElementById('install-banner').classList.add('show');
+}
+
+function dismissInstallBanner() {
+  document.getElementById('install-banner').classList.remove('show');
+  localStorage.setItem('install-banner-dismissed', '1');
+}
+
 load();
+checkInstallBanner();
 </script>
 </body>
 </html>
