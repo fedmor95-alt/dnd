@@ -487,6 +487,250 @@
   .small-btn:active { opacity: 0.6; }
   .small-btn.danger { color: #e88080; border-color: rgba(232, 128, 128, 0.4); }
 
+  /* ========= INVENTORY ========= */
+  .capacity-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .capacity-row label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--leather);
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+  .capacity-input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 2px solid var(--parchment-shadow);
+    border-radius: 3px;
+    background: rgba(255, 252, 240, 0.6);
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--ink);
+    outline: none;
+    width: 80px;
+  }
+  .capacity-input:focus {
+    border-color: var(--gold-fancy);
+    background: rgba(255, 252, 240, 0.9);
+  }
+  .unit-select {
+    padding: 8px 10px;
+    border: 2px solid var(--parchment-shadow);
+    border-radius: 3px;
+    background: rgba(255, 252, 240, 0.6);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--leather);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .capacity-bar-wrap {
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .capacity-bar-track {
+    height: 22px;
+    background: rgba(101, 67, 33, 0.2);
+    border-radius: 11px;
+    overflow: hidden;
+    border: 1.5px solid var(--parchment-shadow);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .capacity-bar-fill {
+    height: 100%;
+    transition: width 0.4s ease, background 0.4s ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .capacity-bar-fill.low {
+    background: linear-gradient(180deg, #5a9a30, var(--green-forest));
+  }
+  .capacity-bar-fill.mid {
+    background: linear-gradient(180deg, #d4b020, #8b6914);
+  }
+  .capacity-bar-fill.high {
+    background: linear-gradient(180deg, #c84a20, var(--red-blood));
+  }
+  .capacity-bar-fill.over {
+    background: linear-gradient(180deg, #7a1f1f, #3a0808);
+  }
+  .capacity-label {
+    text-align: center;
+    margin-top: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: var(--leather);
+    font-weight: 600;
+  }
+  .capacity-label.over { color: var(--red-blood); }
+  .capacity-label small {
+    font-weight: 400;
+    opacity: 0.7;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .item-search-wrap {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .item-search {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--parchment-shadow);
+    border-radius: 3px;
+    background: rgba(255, 252, 240, 0.6);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    outline: none;
+  }
+  .item-search:focus {
+    border-color: var(--gold-fancy);
+    background: rgba(255, 252, 240, 0.9);
+  }
+  .autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--parchment);
+    border: 2px solid var(--parchment-shadow);
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+  }
+  .autocomplete.show { display: block; }
+  .autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed rgba(101, 67, 33, 0.2);
+    font-size: 0.95rem;
+  }
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover, .autocomplete-item.active {
+    background: rgba(212, 175, 55, 0.2);
+  }
+  .autocomplete-item .ac-name { color: var(--ink); font-weight: 600; }
+  .autocomplete-item .ac-en {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    font-style: italic;
+    display: block;
+  }
+  .autocomplete-item .ac-weight {
+    font-family: 'Cinzel', serif;
+    color: var(--leather);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .autocomplete-add-custom {
+    padding: 10px;
+    text-align: center;
+    color: var(--leather);
+    font-style: italic;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: rgba(212, 175, 55, 0.1);
+  }
+  .autocomplete-add-custom:hover { background: rgba(212, 175, 55, 0.25); }
+
+  .inventory-list {
+    margin-top: 12px;
+  }
+  .inv-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 4px;
+    border-bottom: 1px dashed rgba(101, 67, 33, 0.2);
+  }
+  .inv-item:last-child { border-bottom: none; }
+  .inv-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .inv-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .inv-weight-single {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+  .qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .qty-btn {
+    width: 26px;
+    height: 26px;
+    border: 1.5px solid var(--parchment-shadow);
+    background: rgba(244, 232, 208, 0.5);
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--leather);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .qty-btn:active { background: var(--gold-fancy); color: var(--parchment); }
+  .qty-val {
+    min-width: 26px;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .inv-total-weight {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--leather);
+    min-width: 56px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .inv-delete {
+    background: none;
+    border: none;
+    color: var(--red-blood);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+  .inv-delete:active { opacity: 1; }
+
   /* ========= TOAST ========= */
   .toast {
     position: fixed;
@@ -615,6 +859,35 @@
   </div>
 
   <div class="parchment">
+    <div class="section-title">Equipment</div>
+
+    <div class="capacity-row">
+      <label>Capacità max:</label>
+      <input type="number" id="max-capacity" class="capacity-input" min="0" step="0.1" placeholder="0">
+      <select id="unit-select" class="unit-select">
+        <option value="lb">lb</option>
+        <option value="kg">kg</option>
+      </select>
+    </div>
+
+    <div class="capacity-bar-wrap">
+      <div class="capacity-bar-track">
+        <div class="capacity-bar-fill low" id="capacity-bar" style="width:0%"></div>
+      </div>
+      <div class="capacity-label" id="capacity-label">0 / 0 lb</div>
+    </div>
+
+    <div class="item-search-wrap">
+      <input type="text" id="item-search" class="item-search" placeholder="Cerca un oggetto (es. spada, pozione, corda...)" autocomplete="off">
+      <div class="autocomplete" id="autocomplete"></div>
+    </div>
+
+    <div class="inventory-list" id="inventory-list">
+      <div class="history-empty">~ Lo zaino è vuoto ~</div>
+    </div>
+  </div>
+
+  <div class="parchment">
     <div class="section-title">Chronicle</div>
     <div class="history-list" id="history-list">
       <div class="history-empty">~ Nessuna gesta ancora ~</div>
@@ -637,11 +910,163 @@
 <script>
 const RATES = { pp: 1000, gp: 100, sp: 10, cp: 1 };
 const ORDERED = ['pp', 'gp', 'sp', 'cp'];
+const LB_TO_KG = 0.453592;
+
+// D&D 5e SRD equipment database. Weights in lb (libbre, standard D&D).
+// it = italiano, en = inglese, w = peso in lb
+const DND_ITEMS = [
+  // ARMI SEMPLICI
+  { it: "Clava", en: "Club", w: 2, c: "arma" },
+  { it: "Pugnale", en: "Dagger", w: 1, c: "arma" },
+  { it: "Grande clava", en: "Greatclub", w: 10, c: "arma" },
+  { it: "Ascia da lancio", en: "Handaxe", w: 2, c: "arma" },
+  { it: "Giavellotto", en: "Javelin", w: 2, c: "arma" },
+  { it: "Martello leggero", en: "Light hammer", w: 2, c: "arma" },
+  { it: "Mazza", en: "Mace", w: 4, c: "arma" },
+  { it: "Bastone ferrato", en: "Quarterstaff", w: 4, c: "arma" },
+  { it: "Falcetto", en: "Sickle", w: 2, c: "arma" },
+  { it: "Lancia", en: "Spear", w: 3, c: "arma" },
+  { it: "Balestra leggera", en: "Crossbow, light", w: 5, c: "arma" },
+  { it: "Dardo", en: "Dart", w: 0.25, c: "arma" },
+  { it: "Arco corto", en: "Shortbow", w: 2, c: "arma" },
+  { it: "Fionda", en: "Sling", w: 0, c: "arma" },
+  // ARMI DA GUERRA
+  { it: "Ascia da battaglia", en: "Battleaxe", w: 4, c: "arma" },
+  { it: "Mazzafrusto", en: "Flail", w: 2, c: "arma" },
+  { it: "Glaive", en: "Glaive", w: 6, c: "arma" },
+  { it: "Grande ascia", en: "Greataxe", w: 7, c: "arma" },
+  { it: "Spadone", en: "Greatsword", w: 6, c: "arma" },
+  { it: "Alabarda", en: "Halberd", w: 6, c: "arma" },
+  { it: "Lancia da cavaliere", en: "Lance", w: 6, c: "arma" },
+  { it: "Spada lunga", en: "Longsword", w: 3, c: "arma" },
+  { it: "Maglio", en: "Maul", w: 10, c: "arma" },
+  { it: "Stella del mattino", en: "Morningstar", w: 4, c: "arma" },
+  { it: "Picca", en: "Pike", w: 18, c: "arma" },
+  { it: "Stocco", en: "Rapier", w: 2, c: "arma" },
+  { it: "Scimitarra", en: "Scimitar", w: 3, c: "arma" },
+  { it: "Spada corta", en: "Shortsword", w: 2, c: "arma" },
+  { it: "Tridente", en: "Trident", w: 4, c: "arma" },
+  { it: "Piccone da guerra", en: "War pick", w: 2, c: "arma" },
+  { it: "Martello da guerra", en: "Warhammer", w: 2, c: "arma" },
+  { it: "Frusta", en: "Whip", w: 3, c: "arma" },
+  { it: "Cerbottana", en: "Blowgun", w: 1, c: "arma" },
+  { it: "Balestra a mano", en: "Hand crossbow", w: 3, c: "arma" },
+  { it: "Balestra pesante", en: "Heavy crossbow", w: 18, c: "arma" },
+  { it: "Arco lungo", en: "Longbow", w: 2, c: "arma" },
+  { it: "Rete", en: "Net", w: 3, c: "arma" },
+  // MUNIZIONI
+  { it: "Frecce (20)", en: "Arrows (20)", w: 1, c: "munizioni" },
+  { it: "Quadrelli (20)", en: "Crossbow bolts (20)", w: 1.5, c: "munizioni" },
+  { it: "Dardi cerbottana (50)", en: "Blowgun needles (50)", w: 1, c: "munizioni" },
+  { it: "Proiettili fionda (20)", en: "Sling bullets (20)", w: 1.5, c: "munizioni" },
+  // ARMATURE LEGGERE
+  { it: "Armatura imbottita", en: "Padded armor", w: 8, c: "armatura" },
+  { it: "Armatura di cuoio", en: "Leather armor", w: 10, c: "armatura" },
+  { it: "Cuoio borchiato", en: "Studded leather", w: 13, c: "armatura" },
+  // ARMATURE INTERMEDIE
+  { it: "Pelle", en: "Hide armor", w: 12, c: "armatura" },
+  { it: "Camicia di maglia", en: "Chain shirt", w: 20, c: "armatura" },
+  { it: "Squame", en: "Scale mail", w: 45, c: "armatura" },
+  { it: "Corazza di piastre", en: "Breastplate", w: 20, c: "armatura" },
+  { it: "Mezza armatura", en: "Half plate", w: 40, c: "armatura" },
+  // ARMATURE PESANTI
+  { it: "Maglia ad anelli", en: "Ring mail", w: 40, c: "armatura" },
+  { it: "Cotta di maglia", en: "Chain mail", w: 55, c: "armatura" },
+  { it: "Armatura a strisce", en: "Splint armor", w: 60, c: "armatura" },
+  { it: "Armatura completa", en: "Plate armor", w: 65, c: "armatura" },
+  { it: "Scudo", en: "Shield", w: 6, c: "armatura" },
+  // EQUIPAGGIAMENTO AVVENTURA
+  { it: "Zaino", en: "Backpack", w: 5, c: "equipaggiamento" },
+  { it: "Sacco a pelo", en: "Bedroll", w: 7, c: "equipaggiamento" },
+  { it: "Coperta", en: "Blanket", w: 3, c: "equipaggiamento" },
+  { it: "Carrucola", en: "Block and tackle", w: 5, c: "equipaggiamento" },
+  { it: "Libro", en: "Book", w: 5, c: "equipaggiamento" },
+  { it: "Bottiglia di vetro", en: "Glass bottle", w: 2, c: "equipaggiamento" },
+  { it: "Secchio", en: "Bucket", w: 2, c: "equipaggiamento" },
+  { it: "Caltrops (sacchetto da 20)", en: "Caltrops bag (20)", w: 2, c: "equipaggiamento" },
+  { it: "Candela", en: "Candle", w: 0, c: "equipaggiamento" },
+  { it: "Catena (3 m)", en: "Chain (10 ft)", w: 10, c: "equipaggiamento" },
+  { it: "Piede di porco", en: "Crowbar", w: 5, c: "equipaggiamento" },
+  { it: "Borsa per componenti", en: "Component pouch", w: 2, c: "equipaggiamento" },
+  { it: "Martello", en: "Hammer", w: 3, c: "equipaggiamento" },
+  { it: "Maglio", en: "Sledgehammer", w: 10, c: "equipaggiamento" },
+  { it: "Acqua santa (fiala)", en: "Holy water (flask)", w: 1, c: "equipaggiamento" },
+  { it: "Tagliola", en: "Hunting trap", w: 25, c: "equipaggiamento" },
+  { it: "Boccetta d'inchiostro", en: "Ink bottle", w: 0, c: "equipaggiamento" },
+  { it: "Penna d'oca", en: "Ink pen", w: 0, c: "equipaggiamento" },
+  { it: "Lanterna schermabile", en: "Hooded lantern", w: 2, c: "equipaggiamento" },
+  { it: "Lanterna sordina", en: "Bullseye lantern", w: 2, c: "equipaggiamento" },
+  { it: "Lucchetto", en: "Lock", w: 1, c: "equipaggiamento" },
+  { it: "Lente d'ingrandimento", en: "Magnifying glass", w: 0, c: "equipaggiamento" },
+  { it: "Manette", en: "Manacles", w: 6, c: "equipaggiamento" },
+  { it: "Specchio d'acciaio", en: "Steel mirror", w: 0.5, c: "equipaggiamento" },
+  { it: "Olio (fiala)", en: "Oil (flask)", w: 1, c: "equipaggiamento" },
+  { it: "Foglio di carta", en: "Paper (sheet)", w: 0, c: "equipaggiamento" },
+  { it: "Foglio di pergamena", en: "Parchment (sheet)", w: 0, c: "equipaggiamento" },
+  { it: "Profumo (fiala)", en: "Perfume (vial)", w: 0, c: "equipaggiamento" },
+  { it: "Piccone da minatore", en: "Miner's pick", w: 10, c: "equipaggiamento" },
+  { it: "Pertica (3 m)", en: "Pole (10 ft)", w: 7, c: "equipaggiamento" },
+  { it: "Pentola di ferro", en: "Iron pot", w: 10, c: "equipaggiamento" },
+  { it: "Razioni (1 giorno)", en: "Rations (1 day)", w: 2, c: "equipaggiamento" },
+  { it: "Veste", en: "Robes", w: 4, c: "equipaggiamento" },
+  { it: "Corda di canapa (15 m)", en: "Hempen rope (50 ft)", w: 10, c: "equipaggiamento" },
+  { it: "Corda di seta (15 m)", en: "Silk rope (50 ft)", w: 5, c: "equipaggiamento" },
+  { it: "Sacco", en: "Sack", w: 0.5, c: "equipaggiamento" },
+  { it: "Bilancia da mercante", en: "Merchant's scale", w: 3, c: "equipaggiamento" },
+  { it: "Cera per sigillo", en: "Sealing wax", w: 0, c: "equipaggiamento" },
+  { it: "Pala", en: "Shovel", w: 5, c: "equipaggiamento" },
+  { it: "Sapone", en: "Soap", w: 0, c: "equipaggiamento" },
+  { it: "Libro degli incantesimi", en: "Spellbook", w: 3, c: "equipaggiamento" },
+  { it: "Punte (10)", en: "Iron spikes (10)", w: 5, c: "equipaggiamento" },
+  { it: "Cannocchiale", en: "Spyglass", w: 1, c: "equipaggiamento" },
+  { it: "Tenda (2 persone)", en: "Two-person tent", w: 20, c: "equipaggiamento" },
+  { it: "Acciarino", en: "Tinderbox", w: 1, c: "equipaggiamento" },
+  { it: "Torcia", en: "Torch", w: 1, c: "equipaggiamento" },
+  { it: "Fiala", en: "Vial", w: 0, c: "equipaggiamento" },
+  { it: "Otre dell'acqua", en: "Waterskin", w: 5, c: "equipaggiamento" },
+  { it: "Pietra per affilare", en: "Whetstone", w: 1, c: "equipaggiamento" },
+  // VESTITI
+  { it: "Vestiti comuni", en: "Common clothes", w: 3, c: "vestiti" },
+  { it: "Costume", en: "Costume clothes", w: 4, c: "vestiti" },
+  { it: "Vestiti eleganti", en: "Fine clothes", w: 6, c: "vestiti" },
+  { it: "Vestiti da viaggio", en: "Traveler's clothes", w: 4, c: "vestiti" },
+  // STRUMENTI
+  { it: "Strumenti da fabbro", en: "Smith's tools", w: 8, c: "strumenti" },
+  { it: "Strumenti da artigiano", en: "Tinker's tools", w: 10, c: "strumenti" },
+  { it: "Strumenti da carpentiere", en: "Carpenter's tools", w: 6, c: "strumenti" },
+  { it: "Strumenti da cuoco", en: "Cook's utensils", w: 8, c: "strumenti" },
+  { it: "Strumenti da scassinatore", en: "Thieves' tools", w: 1, c: "strumenti" },
+  { it: "Strumenti da erborista", en: "Herbalism kit", w: 3, c: "strumenti" },
+  { it: "Kit di travestimento", en: "Disguise kit", w: 3, c: "strumenti" },
+  { it: "Kit di falsificatore", en: "Forgery kit", w: 5, c: "strumenti" },
+  { it: "Kit da pronto soccorso", en: "Healer's kit", w: 3, c: "strumenti" },
+  { it: "Kit alchimista", en: "Alchemist's supplies", w: 8, c: "strumenti" },
+  { it: "Strumenti da calligrafo", en: "Calligrapher's supplies", w: 5, c: "strumenti" },
+  { it: "Strumenti da gioielliere", en: "Jeweler's tools", w: 2, c: "strumenti" },
+  { it: "Strumenti da pittore", en: "Painter's supplies", w: 5, c: "strumenti" },
+  { it: "Strumenti da vasaio", en: "Potter's tools", w: 3, c: "strumenti" },
+  // POZIONI E MAGIA
+  { it: "Pozione di guarigione", en: "Potion of healing", w: 0.5, c: "magia" },
+  { it: "Pergamena", en: "Scroll", w: 0, c: "magia" },
+  { it: "Bacchetta", en: "Wand", w: 1, c: "magia" },
+  { it: "Bastone", en: "Staff", w: 4, c: "magia" },
+  // ALTRO
+  { it: "Borsa", en: "Pouch", w: 1, c: "altro" },
+  { it: "Anello", en: "Ring", w: 0, c: "altro" },
+  { it: "Amuleto", en: "Amulet", w: 1, c: "altro" },
+  { it: "Mantello", en: "Cloak", w: 1, c: "altro" },
+  { it: "Stivali", en: "Boots", w: 1, c: "altro" },
+  { it: "Guanti", en: "Gloves", w: 0, c: "altro" },
+  { it: "Cintura", en: "Belt", w: 0.5, c: "altro" },
+];
 
 let totalCopper = 0;
 let mode = 'add';
 let history = [];
 let charName = '';
+let inventory = []; // [{ name, w (lb), qty, custom }]
+let maxCapacityLb = 0; // sempre in lb internamente
+let unit = 'lb';
 
 const nameInput = document.getElementById('char-name');
 nameInput.addEventListener('input', () => {
@@ -657,14 +1082,32 @@ function load() {
       totalCopper = data.totalCopper || 0;
       history = data.history || [];
       charName = data.charName || '';
+      inventory = data.inventory || [];
+      maxCapacityLb = data.maxCapacityLb || 0;
+      unit = data.unit || 'lb';
     } catch(e) {}
   }
   nameInput.value = charName;
+  document.getElementById('unit-select').value = unit;
+  renderCapacityInput();
   render();
+  renderInventory();
 }
 
 function save() {
-  localStorage.setItem('dnd-coins', JSON.stringify({ totalCopper, history, charName }));
+  localStorage.setItem('dnd-coins', JSON.stringify({
+    totalCopper, history, charName, inventory, maxCapacityLb, unit
+  }));
+}
+
+function renderCapacityInput() {
+  const inp = document.getElementById('max-capacity');
+  if (maxCapacityLb === 0) {
+    inp.value = '';
+  } else {
+    const display = unit === 'kg' ? maxCapacityLb * LB_TO_KG : maxCapacityLb;
+    inp.value = Number.isInteger(display) ? display : display.toFixed(2);
+  }
 }
 
 function valueInEach(copper) {
@@ -764,16 +1207,18 @@ function applyTransaction() {
 }
 
 function resetAll() {
-  if (!confirm('Vuoi davvero svuotare la borsa?\nQuesta azione non può essere annullata.')) return;
+  if (!confirm('Vuoi davvero azzerare tutto?\nMonete, cronologia e inventario verranno cancellati.\nQuesta azione non può essere annullata.')) return;
   totalCopper = 0;
   history = [];
+  inventory = [];
   save();
   render();
-  showToast('Borsa svuotata');
+  renderInventory();
+  showToast('Tutto azzerato');
 }
 
 function exportData() {
-  const data = { totalCopper, history, charName, exportDate: new Date().toISOString() };
+  const data = { totalCopper, history, charName, inventory, maxCapacityLb, unit, exportDate: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -800,9 +1245,15 @@ document.getElementById('import-file').addEventListener('change', (e) => {
       totalCopper = data.totalCopper || 0;
       history = data.history || [];
       charName = data.charName || '';
+      inventory = data.inventory || [];
+      maxCapacityLb = data.maxCapacityLb || 0;
+      unit = data.unit || 'lb';
       nameInput.value = charName;
+      document.getElementById('unit-select').value = unit;
+      renderCapacityInput();
       save();
       render();
+      renderInventory();
       showToast('Backup ripristinato');
     } catch(err) {
       showToast('File non valido');
@@ -810,6 +1261,192 @@ document.getElementById('import-file').addEventListener('change', (e) => {
   };
   reader.readAsText(file);
   e.target.value = '';
+});
+
+// ========= INVENTORY =========
+
+function formatWeight(lb) {
+  const val = unit === 'kg' ? lb * LB_TO_KG : lb;
+  if (val === 0) return '—';
+  if (Number.isInteger(val)) return val + ' ' + unit;
+  return val.toFixed(2).replace(/\.?0+$/, '') + ' ' + unit;
+}
+
+function totalInventoryWeight() {
+  return inventory.reduce((sum, it) => sum + it.w * it.qty, 0);
+}
+
+function renderInventory() {
+  const list = document.getElementById('inventory-list');
+  if (inventory.length === 0) {
+    list.innerHTML = '<div class="history-empty">~ Lo zaino è vuoto ~</div>';
+  } else {
+    list.innerHTML = inventory.map((it, idx) => `
+      <div class="inv-item">
+        <div class="inv-info">
+          <div class="inv-name">${escapeHtml(it.name)}</div>
+          <div class="inv-weight-single">${formatWeight(it.w)} cad.</div>
+        </div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+          <span class="qty-val">${it.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+        </div>
+        <div class="inv-total-weight">${formatWeight(it.w * it.qty)}</div>
+        <button class="inv-delete" onclick="removeItem(${idx})">✕</button>
+      </div>
+    `).join('');
+  }
+  renderCapacityBar();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderCapacityBar() {
+  const total = totalInventoryWeight();
+  const max = maxCapacityLb;
+  const bar = document.getElementById('capacity-bar');
+  const label = document.getElementById('capacity-label');
+  const displayTotal = unit === 'kg' ? total * LB_TO_KG : total;
+  const displayMax = unit === 'kg' ? max * LB_TO_KG : max;
+  const fmt = v => Number.isInteger(v) ? v : v.toFixed(2).replace(/\.?0+$/, '');
+
+  if (max === 0) {
+    bar.style.width = '0%';
+    bar.className = 'capacity-bar-fill low';
+    label.classList.remove('over');
+    label.innerHTML = `Peso: <strong>${fmt(displayTotal)} ${unit}</strong> <small>(imposta la capacità massima)</small>`;
+    return;
+  }
+
+  const pct = (total / max) * 100;
+  bar.style.width = Math.min(pct, 100) + '%';
+  bar.className = 'capacity-bar-fill ' + (pct > 100 ? 'over' : pct > 80 ? 'high' : pct > 50 ? 'mid' : 'low');
+
+  let suffix = '';
+  if (pct > 100) suffix = ` <small>— sovraccarico!</small>`;
+  else if (pct > 80) suffix = ` <small>— quasi al limite</small>`;
+  label.classList.toggle('over', pct > 100);
+  label.innerHTML = `<strong>${fmt(displayTotal)}</strong> / ${fmt(displayMax)} ${unit} (${pct.toFixed(0)}%)${suffix}`;
+}
+
+function changeQty(idx, delta) {
+  inventory[idx].qty += delta;
+  if (inventory[idx].qty <= 0) {
+    inventory.splice(idx, 1);
+  }
+  save();
+  renderInventory();
+}
+
+function removeItem(idx) {
+  inventory.splice(idx, 1);
+  save();
+  renderInventory();
+}
+
+function addInventoryItem(name, weightLb, custom = false) {
+  const existing = inventory.find(i => i.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    inventory.push({ name, w: weightLb, qty: 1, custom });
+  }
+  save();
+  renderInventory();
+  showToast('Aggiunto: ' + name);
+}
+
+// Capacity input handlers
+document.getElementById('max-capacity').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value) || 0;
+  maxCapacityLb = unit === 'kg' ? val / LB_TO_KG : val;
+  save();
+  renderCapacityBar();
+});
+
+document.getElementById('unit-select').addEventListener('change', (e) => {
+  unit = e.target.value;
+  save();
+  renderCapacityInput();
+  renderInventory();
+});
+
+// ========= AUTOCOMPLETE =========
+const searchInput = document.getElementById('item-search');
+const autocompleteEl = document.getElementById('autocomplete');
+
+function normalize(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+function searchItems(query) {
+  const q = normalize(query.trim());
+  if (!q) return [];
+  return DND_ITEMS.filter(it =>
+    normalize(it.it).includes(q) || normalize(it.en).includes(q)
+  ).slice(0, 15);
+}
+
+let activeIdx = -1;
+let currentResults = [];
+
+function renderAutocomplete(query) {
+  currentResults = searchItems(query);
+  activeIdx = -1;
+  if (!query.trim()) {
+    autocompleteEl.classList.remove('show');
+    return;
+  }
+  let html = currentResults.map((it, i) => `
+    <div class="autocomplete-item" data-idx="${i}">
+      <div>
+        <span class="ac-name">${escapeHtml(it.it)}</span>
+        <span class="ac-en">${escapeHtml(it.en)}</span>
+      </div>
+      <span class="ac-weight">${formatWeight(it.w)}</span>
+    </div>
+  `).join('');
+  if (query.trim().length > 0) {
+    html += `<div class="autocomplete-add-custom" data-custom="1">+ Aggiungi "${escapeHtml(query.trim())}" come oggetto personalizzato</div>`;
+  }
+  autocompleteEl.innerHTML = html;
+  autocompleteEl.classList.add('show');
+
+  autocompleteEl.querySelectorAll('.autocomplete-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const i = parseInt(el.dataset.idx);
+      const item = currentResults[i];
+      addInventoryItem(item.it, item.w);
+      searchInput.value = '';
+      autocompleteEl.classList.remove('show');
+    });
+  });
+  const customBtn = autocompleteEl.querySelector('[data-custom]');
+  if (customBtn) {
+    customBtn.addEventListener('click', () => {
+      const name = query.trim();
+      const wStr = prompt(`Peso di "${name}" in ${unit}:`, '0');
+      if (wStr === null) return;
+      const wVal = parseFloat(wStr) || 0;
+      const wLb = unit === 'kg' ? wVal / LB_TO_KG : wVal;
+      addInventoryItem(name, wLb, true);
+      searchInput.value = '';
+      autocompleteEl.classList.remove('show');
+    });
+  }
+}
+
+searchInput.addEventListener('input', (e) => renderAutocomplete(e.target.value));
+searchInput.addEventListener('focus', (e) => {
+  if (e.target.value.trim()) renderAutocomplete(e.target.value);
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.item-search-wrap')) {
+    autocompleteEl.classList.remove('show');
+  }
 });
 
 function showToast(msg) {
